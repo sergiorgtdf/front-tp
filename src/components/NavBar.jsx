@@ -1,78 +1,45 @@
-import { useContext } from "react";
-import { Link, NavLink } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
-
-const Navbar = () => {
-    const { logout } = useContext(AuthContext);
-
+import { Link } from "react-router-dom";
+function NavBar() {
     return (
-        <nav
-            className="navbar navbar-expand-lg bg-body-tertiary bg-dark border-bottom border-body sticky-top"
-            data-bs-theme="dark">
-            <div className="container">
-                <Link className="navbar-brand" to="/">
-                    Arg-Prog
-                </Link>
-                <button
-                    className="navbar-toggler"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#navbarNav"
-                    aria-controls="navbarNav"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation">
-                    <span className="navbar-toggler-icon"></span>
-                </button>
-                <div className="collapse navbar-collapse" id="navbarNav">
-                    <ul className="navbar-nav">
-                        <li className="nav-item">
-                            <NavLink
-                                className={({ isActive }) => {
-                                    return isActive
-                                        ? "nav-link active"
-                                        : "nav-link";
-                                }}
-                                aria-current="page"
-                                to="/">
-                                Home
-                            </NavLink>
-                        </li>
-                        <li className="nav-item">
-                            <NavLink
-                                className={({ isActive }) => {
-                                    return isActive
-                                        ? "nav-link active"
-                                        : "nav-link";
-                                }}
-                                aria-current="page"
-                                to="/playlist">
-                                Blog
-                            </NavLink>
-                        </li>
-                        <li className="nav-item">
-                            <NavLink
-                                className={({ isActive }) => {
-                                    return isActive
-                                        ? "nav-link active"
-                                        : "nav-link";
-                                }}
-                                aria-current="page"
-                                to="/playlist/new">
-                                Aggregate
-                            </NavLink>
-                        </li>
-                    </ul>
-                </div>
-                <div className="d-flex" role="search">
-                    <button
-                        className="btn btn-outline-danger btn-sm"
-                        onClick={logout}>
-                        Logout
-                    </button>
-                </div>
+        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+            <Link className="navbar-brand" href="/">
+                Argentina Programa
+            </Link>
+            <button
+                className="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarNav"
+                aria-controls="navbarNav"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span className="navbar-toggler-icon"></span>
+            </button>
+            <div className="collapse navbar-collapse" id="navbarNav">
+                <ul className="navbar-nav">
+                    <li className="nav-item active">
+                        <Link className="nav-link" to="/">
+                            Home
+                        </Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link className="nav-link" to="/post">
+                            Post
+                        </Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link className="nav-link" to="/newpost">
+                            New Post
+                        </Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link className="nav-link " to="/login">
+                            Logout
+                        </Link>
+                    </li>
+                </ul>
             </div>
         </nav>
     );
-};
-
-export default Navbar;
+}
+export default NavBar;

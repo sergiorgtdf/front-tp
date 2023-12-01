@@ -1,0 +1,68 @@
+body{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center ;
+    
+}
+.container {
+    border: solid 4px rgba(0,0,0, .1);
+    height: 350px;
+    width: 500px;
+}
+form{
+
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    font-family: 'Courier New', Courier, monospace;
+    
+}
+
+form div {
+    
+    display: flex;
+    flex-direction: column ;
+    position: relative;
+    gap: 20px;
+    
+}
+form div input {
+    color: #786c6c ;
+    background: none;
+    border: solid 1px rgba(0,0,0.1);
+    border-radius: 4px;
+    padding: 14px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 16px;
+}
+
+input:focus {
+    border: solid 2px rgb(26,115,232,0.8);
+    outline: none;
+    /* Ilumina */
+    /* outline: none;
+    border-color: #45a29e;
+    box-shadow: 0 0 10px #45a29e; */
+}
+form div label{
+    font-size:18px ;
+    position: absolute;
+    bottom: 15px;
+    left: 10px;
+    cursor: pointer;
+    color: rgba(0,0,0, .4);
+    transition: transform .2s;
+}
+input:focus + label,
+input:not(:placeholder-shown) + label{
+    transform: translateY(-24px);
+    background: white;
+    font-size: 14px;
+    color: rgb(26,115,232,0.8);
+    padding: 5px;
+}
+input:not(:focus) + label{
+    color: rgba(0,0,0, .4);
+    /* pointer-events: none; */
+}
