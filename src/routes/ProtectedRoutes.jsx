@@ -28,7 +28,7 @@ function ProtectedRoute() {
     const { isAuth, loading } = useAuth();
 
     const navigate = useNavigate();
-    console.log("paso por rutas privadas");
+
     useEffect(() => {
         if (!isAuth) {
             navigate("/login");

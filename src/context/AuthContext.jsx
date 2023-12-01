@@ -78,7 +78,7 @@ export const AuthProvider = ({ children }) => {
             console.log(userLS);
             const tokenLS = localStorage.getItem("token");
             console.log(tokenLS);
-            // si no tenemos alguno de los dos campos en el localStorage borramos todo
+
             if (!userLS || !tokenLS) {
                 localStorage.removeItem("user");
                 localStorage.removeItem("token");
