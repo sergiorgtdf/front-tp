@@ -1,12 +1,22 @@
-import axios from "./setCredentials.js";
+import axios from "./SetCredentials.js";
 
-//pedidos al servidor con axios
+export const loginRequest = (user) => {
+    try {
+        return axios.post("/login", user);
+    } catch (error) {
+        console.log(error);
+    }
+};
 
-//creamos registerReq con un user por atributo y vamos a pasarle a la petición con ese user
-export const registerReq = (user) => axios.post("/register", user);
+export const logout = () => axios.post("/logout");
 
-//creamos el loginRequest
-export const loginRequest = (user) => axios.post("/login", user);
+export const registerRequest = (user) => axios.post("/register", user);
 
-//creamos la verificación del token desde el fron
-export const verifyToken = () => axios.get("/verifyToken");
+export const verifyToken = () => {
+    try {
+        // console.log("verifyToken");
+        return axios.get("/verifyToken");
+    } catch (error) {
+        console.log(error);
+    }
+};

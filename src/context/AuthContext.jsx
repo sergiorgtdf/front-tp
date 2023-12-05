@@ -1,105 +1,116 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { loginRequest, registerReq, verifyToken } from "../api/auth.js";
+import { createContext, useContext, useState } from "react";
+import { registerRequest, loginRequest, verifyToken } from "../api/Auth.js";
+import { useEffect } from "react";
+// import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
+// Variable de contexto
 export const AuthContext = createContext();
 
 export const useAuth = () => {
     const context = useContext(AuthContext);
-    if (!context)
-        throw new Error("useAuth must be used within an AuthProvider");
+    if (!context) throw new Error("Error en el contexto del usuario");
     return context;
 };
 
 export const AuthProvider = ({ children }) => {
+    // Guarda datos del usuario
     const [user, setUser] = useState(null);
+    // Guarda si la pagina se esta cargando
     const [loading, setLoading] = useState(true);
-
+    // Guarda si el usuario esta autenticado
     const [isAuth, setIsAuth] = useState(false);
 
-    const [errorBackend, setErrorBackend] = useState([]);
-
-    const register = async (user) => {
+    // Manejo el estado del  error
+    const [errorBack, setErroBack] = useState([]);
+    // ---------------------- FUNCIONES --------------------------------
+    // Registro de Usuario
+    const createUser = async (user) => {
         try {
-            const res = await registerReq(user);
-            if (res.data.success) {
-                setUser(res.data.user);
-                setIsAuth(true);
-            } else {
-                alert(res.data.message);
-                setErrorBackend(res.data.message);
-            }
+            const respuesta = await registerRequest(user);
+            // console.log(respuesta.data);
+            setUser(respuesta.data);
+            setIsAuth(true);
         } catch (error) {
-            setErrorBackend(error.message);
+            setIsAuth(false);
+            // console.log(error.response.data);
+            setErroBack(error.response.data);
         }
     };
 
     const login = async (user) => {
         try {
-            const res = await loginRequest(user);
-            if (res.data) {
-                setUser(res.data.user);
-                setIsAuth(true);
-                localStorage.setItem("token", res.data.token);
-                localStorage.setItem("user", JSON.stringify(res.data.user));
-            } else {
-                alert("Error al iniciar sesion");
-                setIsAuth(false);
-                setErrorBackend(res.data.message);
+            const respuesta = await loginRequest(user);
+            if (respuesta) {
+                //  coo ookies.set({"token", respuesta.data.token});
+                localStorage.setItem("token", respuesta.data.token);
+                localStorage.setItem(
+                    "user",
+                    JSON.stringify(respuesta.data.user)
+                );
             }
-            return;
+            setUser(respuesta.data);
+            setIsAuth(true);
         } catch (error) {
             setIsAuth(false);
-            setErrorBackend(error.message);
+            console.log(error.response.data);
+            setErroBack(error);
         }
     };
 
+    // Funcion para cerrar sesion - Borra variables
     const logout = () => {
-        localStorage.removeItem("user");
+        Cookies.remove("token");
         localStorage.removeItem("token");
-
+        localStorage.removeItem("user");
+        console.log("adios");
         setIsAuth(false);
         setUser(null);
-        window.location.replace("/login");
     };
 
+    // ---------------------- FUNCIONES --------------------------------
+    //borrar mensaje de error
     useEffect(() => {
-        if (errorBackend.length > 0) {
+        if (errorBack.length > 0) {
             const timer = setTimeout(() => {
-                setErrorBackend([]);
+                setErroBack([]);
             }, 3000);
             return () => clearTimeout(timer);
         }
-    }, [errorBackend]);
+    }, [errorBack]);
 
+    // Verifica si el usuario esta logueado, cuando se recarga la pagina
+
+    // guarda cookiek
     useEffect(() => {
         async function verifyLogin() {
-            console.log("Verify Login");
-            const userLS = JSON.parse(localStorage.getItem("user"));
-            console.log(userLS);
-            const tokenLS = localStorage.getItem("token");
-            console.log(tokenLS);
-
-            if (!userLS || !tokenLS) {
-                localStorage.removeItem("user");
-                localStorage.removeItem("token");
-
+            const cookie = Cookies.get();
+            // console.log(cookie.token);
+            if (!cookie.token) {
+                Cookies.remove("token");
                 setIsAuth(false);
                 setUser(null);
-                setLoading(false);
-            } else {
-                // verificar token
-                const respToken = verifyToken(tokenLS);
-                console.log(respToken);
-                if (!respToken.data) {
-                    localStorage.removeItem("user");
-                    localStorage.removeItem("token");
-                    setLoading(false);
+            }
+            try {
+                const respuesta = await verifyToken(cookie.token);
+                // console.log(respuesta);
+                if (!respuesta.data) {
                     setIsAuth(false);
                     setUser(null);
+                    Cookies.remove("token");
+
                     setLoading(false);
                 }
+                setUser(respuesta.data);
+                setIsAuth(true);
+                setLoading(false);
+            } catch (error) {
+                setIsAuth(false);
+                setUser(null);
+                Cookies.remove("token");
+                setLoading(false);
+                // console.log(error.response);
             }
-            console.log(`Loadin ${loading} - isAuth ${isAuth}`);
         }
         verifyLogin();
     }, []);
@@ -107,12 +118,13 @@ export const AuthProvider = ({ children }) => {
     return (
         <AuthContext.Provider
             value={{
-                user,
+                createUser,
                 login,
                 logout,
-                register,
-                isAuth,
                 loading,
+                isAuth,
+                user,
+                errorBack,
             }}>
             {children}
         </AuthContext.Provider>

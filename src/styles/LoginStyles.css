@@ -1,12 +1,15 @@
-body{
+.contenedorLogin {
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center ;
-    
+     
 }
 .container {
+    
+    
     border: solid 4px rgba(0,0,0, .1);
+
     height: 350px;
     width: 500px;
 }
@@ -41,9 +44,9 @@ input:focus {
     border: solid 2px rgb(26,115,232,0.8);
     outline: none;
     /* Ilumina */
-    /* outline: none;
+    outline: none;
     border-color: #45a29e;
-    box-shadow: 0 0 10px #45a29e; */
+    box-shadow: 0 0 10px #45a29e;
 }
 form div label{
     font-size:18px ;
