@@ -1,5 +1,8 @@
+import { useEffect } from "react";
 import { useAuth } from "../context/authContext";
 import { Navigate, Outlet } from "react-router-dom";
+import Spinner from "react-bootstrap/Spinner";
+import "../styles/style.css";
 
 export const ProtectedRoutes = () => {
     // TODO MOSTRAR EFECTO CARGANDO
@@ -10,15 +13,19 @@ export const ProtectedRoutes = () => {
     if (loading)
         return (
             <>
-                <h1>`Cargando...`</h1>;
+                <div className="loadingSpinner">
+                    <Spinner animation="border" variant="primary" />
+                    <h1>Cargando...</h1>;
+                </div>
             </>
         );
     // si no esta autenticado lo redirecciono al login
     if (loading && !isAuth) return <Navigate to="/login" replace />;
-    //     //     true       false
-    //     //     false       true
 
-    if (!loading && !isAuth) return <Navigate to="/login" replace />;
+    console.log(`isAuth rutas protegidas = ${isAuth} `);
+    if (!isAuth) {
+        return <Navigate to="/login" />;
+    }
 
     // si esta autenticado lo redirecciono al componente hijo
     return <Outlet />;

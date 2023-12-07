@@ -17,6 +17,16 @@ export const useAuth = () => {
     return context;
 };
 
+const mensaje = (mensaje, icono) => {
+    Swal.fire({
+        position: "top-end",
+        icon: icono,
+        title: mensaje,
+        showConfirmButton: false,
+        timer: 1500,
+    });
+};
+
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [isAuth, setIsAuth] = useState(false);
@@ -39,6 +49,7 @@ export const AuthProvider = ({ children }) => {
             if (res.status === 200) {
                 setUser(res.data);
                 setIsAuth(true);
+
                 Swal.fire({
                     position: "top-end",
                     icon: "success",
@@ -48,6 +59,13 @@ export const AuthProvider = ({ children }) => {
                 });
             }
         } catch (error) {
+            Swal.fire({
+                position: "top-end",
+                icon: "error",
+                title: error.response.data,
+                showConfirmButton: false,
+                timer: 1500,
+            });
             // console.log(JSON.stringify(error));
             setErrors(error);
         }
@@ -61,9 +79,22 @@ export const AuthProvider = ({ children }) => {
                 localStorage.setItem("user", JSON.stringify(res.data.user));
                 setUser(res.data);
                 setIsAuth(true);
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Registrado Correctamente!",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
             }
         } catch (error) {
-            alert(error.response.data);
+            Swal.fire({
+                position: "top-end",
+                icon: "error",
+                title: error.response.data,
+                showConfirmButton: false,
+                timer: 1500,
+            });
             setIsAuth(false);
             setErrors(error.response.data);
         }

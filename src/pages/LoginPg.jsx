@@ -5,13 +5,12 @@ import { useEffect } from "react";
 import "../styles/LoginStyles.css";
 
 const LoginPg = () => {
+    const { login, isAuth, errors: errorBack } = useAuth();
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm();
-
-    const { login, isAuth, errorBack } = useAuth();
 
     // Efecto para que se redirecciones
     const navigate = useNavigate();
@@ -34,11 +33,7 @@ const LoginPg = () => {
                 </div>
                 <h2>Login</h2>
                 <p>Ingrese con sus credenciales</p>
-                {errorBack.map((err, i) => (
-                    <div key={i} className="bg-red-800 text-white">
-                        {err}
-                    </div>
-                ))}
+
                 <form>
                     <div className="inputBox">
                         <input

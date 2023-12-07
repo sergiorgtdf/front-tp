@@ -1,43 +1,29 @@
-import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import "../styles/LoginStyles.css";
 
-import { useAuth } from "../context/AuthContext";
+import { useEffect } from "react";
+import { useAuth } from "../context/authContext";
+import { Link, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
-export const RegisterPg = () => {
+const RegisterPg = () => {
+    const { createUser, isAuth, errors: registerErrors } = useAuth();
+
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm();
 
-    const { createUser, isAuth, errorBack } = useAuth();
-
     // Efecto para que se redirecciones
     const navigate = useNavigate();
 
-    useEffect(() => {
-        console.log("Register isAuth ", isAuth);
-        if (isAuth) navigate("/task");
-    }, [isAuth]);
-
-    // //TODO: Borrar Mensaje error
-    // useEffect(() => {
-    //     setTimeout(() => {
-    //         // errorBack.length = 0;
-    //     }, 3000);
-    // }, [errorBack]);
-
-    const onSubmit = handleSubmit(async (value) => {
-        // conexion al servidor y envia al usuario
-        // console.log(value);
-        // const respuesta = await registerRequest(value);
-        // console.log(respuesta);
-        // Viene del context
+    const onSubmit = (value) => {
         createUser(value);
-    });
+    };
+
+    useEffect(() => {
+        if (isAuth) navigate("/tasks");
+    }, [isAuth]);
 
     return (
         <div className="box">
@@ -45,13 +31,9 @@ export const RegisterPg = () => {
                 <img src="../../img/task.svg" height="50px" alt="" />
             </div>
             <h2>Register</h2>
+
             <p>Registrese para poder acceder</p>
-            <form>
-                {errorBack.map((err, i) => (
-                    <div key={i} className="ErrLogin">
-                        {err}
-                    </div>
-                ))}
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="inputBox">
                     <input
                         type="text"
@@ -59,8 +41,8 @@ export const RegisterPg = () => {
                         required=""
                         placeholder=" "
                         {...register("username", { required: true })}
+                        autoFocus
                     />
-
                     <label>Username </label>
                 </div>
 

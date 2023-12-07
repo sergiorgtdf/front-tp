@@ -1,22 +1,15 @@
 import axios from "./SetCredentials.js";
+// CONST API = "http://localhost:4000/api";
+// export const registerRequest = async (user) => axios.post("/register", user);
 
-export const loginRequest = (user) => {
-    try {
-        return axios.post("/login", user);
-    } catch (error) {
-        console.log(error);
-    }
+export const registerRequest = async (user) => {
+    return axios.post("/register", user);
+};
+
+export const loginRequest = async (user) => {
+    return axios.post("/login", user);
 };
 
 export const logout = () => axios.post("/logout");
 
-export const registerRequest = (user) => axios.post("/register", user);
-
-export const verifyToken = () => {
-    try {
-        // console.log("verifyToken");
-        return axios.get("/verifyToken");
-    } catch (error) {
-        console.log(error);
-    }
-};
+export const verifyTokenRequest = async () => axios.get("/verifyToken");
