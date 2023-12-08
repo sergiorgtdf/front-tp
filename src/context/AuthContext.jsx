@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 import { createContext, useContext, useState } from "react";
+import { toast } from "react-hot-toast";
+
 import {
     registerRequest,
     loginRequest,
@@ -13,32 +15,36 @@ import Swal from "sweetalert2";
 
 export const useAuth = () => {
     const context = useContext(AuthContext);
-    if (!context) throw new Error("Error en el contexto del usuario");
+    if (!context) throw new Error(["Error en el contexto del usuario"]);
     return context;
 };
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [isAuth, setIsAuth] = useState(false);
-    const [errors, setErrors] = useState([]);
+    const [errorsBack, seterrorsBack] = useState([]);
     const [loading, setLoading] = useState(true);
 
     //Limpia errores
     useEffect(() => {
-        if (errors.length > 0) {
+        if (errorsBack.length > 0) {
             const timer = setTimeout(() => {
-                setErrors([]);
+                seterrorsBack([]);
             }, 3000);
             return () => clearTimeout(timer);
         }
-    }, [errors]);
+    }, [errorsBack]);
 
     const createUser = async (user) => {
         try {
             const res = await registerRequest(user);
-            if (res.status === 200) {
+
+            if (res) {
+                localStorage.setItem("token", res.data.token);
+                localStorage.setItem("user", JSON.stringify(res.data.user));
                 setUser(res.data);
                 setIsAuth(true);
+                toast.success("Bienvenido");
                 Swal.fire({
                     position: "top-end",
                     icon: "success",
@@ -48,8 +54,10 @@ export const AuthProvider = ({ children }) => {
                 });
             }
         } catch (error) {
-            // console.log(JSON.stringify(error));
-            setErrors(error);
+            toast.error(error.response.data);
+
+            setIsAuth(false);
+            seterrorsBack(error.response.data);
         }
     };
 
@@ -59,24 +67,28 @@ export const AuthProvider = ({ children }) => {
             if (res) {
                 localStorage.setItem("token", res.data.token);
                 localStorage.setItem("user", JSON.stringify(res.data.user));
+                toast.success("Bienvenido");
                 setUser(res.data);
                 setIsAuth(true);
             }
         } catch (error) {
-            alert(error.response.data);
+            toast.error(error.response.data);
+
             setIsAuth(false);
-            setErrors(error.response.data);
+            seterrorsBack(error.response.data);
         }
     };
 
     // Funcion para cerrar sesion - Borra variables
     const logout = () => {
+        toast.success("Adios");
         Cookies.remove("token");
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         console.log("adios");
         setIsAuth(false);
         setUser(null);
+        seterrorsBack([]);
     };
 
     // Verifica que este logueado
@@ -99,6 +111,7 @@ export const AuthProvider = ({ children }) => {
             } catch (error) {
                 setIsAuth(false);
                 setLoading(false);
+                seterrorsBack(error.response.data);
             }
         };
         checkLogin();
@@ -112,7 +125,7 @@ export const AuthProvider = ({ children }) => {
                 login,
                 logout,
                 isAuth,
-                errors,
+                errorsBack,
                 loading,
             }}>
             {children}

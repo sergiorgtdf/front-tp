@@ -17,16 +17,6 @@ export const useAuth = () => {
     return context;
 };
 
-const mensaje = (mensaje, icono) => {
-    Swal.fire({
-        position: "top-end",
-        icon: icono,
-        title: mensaje,
-        showConfirmButton: false,
-        timer: 1500,
-    });
-};
-
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [isAuth, setIsAuth] = useState(false);

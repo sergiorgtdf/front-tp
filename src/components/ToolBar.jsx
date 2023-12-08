@@ -1,7 +1,7 @@
 import { useAuth } from "../context/authContext";
 
 export const ToolBar = () => {
-    const { logout } = useAuth();
+    const { logout, isAuth } = useAuth();
 
     return (
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -48,7 +48,27 @@ export const ToolBar = () => {
                                 role="button"
                                 data-bs-toggle="dropdown"
                                 aria-expanded="false">
-                                User
+                                {isAuth ? (
+                                    <img
+                                        src={JSON.parse(
+                                            localStorage.getItem(
+                                                "user.imageURL"
+                                            )
+                                        )}
+                                        alt="..."
+                                        className="rounded-circle"
+                                        width="30"
+                                        height="30"
+                                    />
+                                ) : (
+                                    <img
+                                        src="https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
+                                        alt="..."
+                                        className="rounded-circle"
+                                        width="30"
+                                        height="30"
+                                    />
+                                )}
                             </a>
                             <ul className="dropdown-menu">
                                 <li>

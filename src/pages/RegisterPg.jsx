@@ -1,13 +1,12 @@
-import "../styles/LoginStyles.css";
-
-import { useEffect } from "react";
-import { useAuth } from "../context/authContext";
-import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/authContext";
+import { useEffect } from "react";
+import "../styles/LoginStyles.css";
+import { Toaster } from "react-hot-toast";
 
 const RegisterPg = () => {
-    const { createUser, isAuth, errors: registerErrors } = useAuth();
-
+    const { createUser, isAuth, errorsBack } = useAuth();
     const {
         register,
         handleSubmit,
@@ -17,67 +16,93 @@ const RegisterPg = () => {
     // Efecto para que se redirecciones
     const navigate = useNavigate();
 
-    const onSubmit = (value) => {
-        createUser(value);
-    };
-
+    // Si el usuario esta autenticado lo redirecciona a la pagina de blog
     useEffect(() => {
-        if (isAuth) navigate("/tasks");
+        if (isAuth) {
+            navigate("/blog");
+        }
     }, [isAuth]);
 
+    // Funcion para enviar los datos del formulario
+    const onSubmit = handleSubmit((value) => {
+        if (!errors.username || !errors.email || !errors.password) {
+            createUser(value);
+        }
+    });
+
     return (
-        <div className="box">
-            <div id="logo" className="logo-Pg" title="task">
-                <img src="../../img/task.svg" height="50px" alt="" />
-            </div>
-            <h2>Register</h2>
-
-            <p>Registrese para poder acceder</p>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <div className="inputBox">
-                    <input
-                        type="text"
-                        name="username"
-                        required=""
-                        placeholder=" "
-                        {...register("username", { required: true })}
-                        autoFocus
-                    />
-                    <label>Username </label>
+        <div className="contenedorLogin">
+            <div className="box">
+                <div id="logo" className="logo-Pg" title="Task">
+                    <img src="../../img/task.svg" height="50px" alt="" />
                 </div>
+                <h2>Login</h2>
+                <p>Ingrese con sus credenciales</p>
 
-                <div className="inputBox">
-                    <input
-                        type="email"
-                        name="email"
-                        required=""
-                        placeholder=" "
-                        {...register("email", { required: true })}
-                    />
-                    <label>E-mail </label>
-                </div>
-                <div className="inputBox">
-                    <input
-                        type="password"
-                        name="pasword"
-                        required=""
-                        placeholder=" "
-                        {...register("password", { required: true })}
-                    />
-                    <label>Password</label>
-                </div>
+                {errorsBack.map((error, index) => (
+                    <p key={index} className="errores">
+                        {error.data}
+                    </p>
+                ))}
+                <form>
+                    <div className="inputBox">
+                        <input
+                            type="username"
+                            name="username"
+                            required=""
+                            placeholder=" "
+                            {...register("username", { required: true })}
+                        />
+                        {errors.email && (
+                            <p className="errores">
+                                El Nombre de usuario es requerido
+                            </p>
+                        )}
 
-                <div className="forgot">
-                    <button type="button">
-                        <p>
-                            <Link to="/login">Ya tengo una cuenta</Link>
-                        </p>
+                        <label>Nombre de Usuario </label>
+                    </div>
+
+                    <div className="inputBox">
+                        <input
+                            type="email"
+                            name="email"
+                            required=""
+                            placeholder=" "
+                            {...register("email", { required: true })}
+                        />
+                        {errors.email && (
+                            <p className="errores">El Email es requerido</p>
+                        )}
+
+                        <label>E-mail </label>
+                    </div>
+                    <div className="inputBox">
+                        <input
+                            type="password"
+                            name="pasword"
+                            required=""
+                            placeholder=" "
+                            {...register("password", { required: true })}
+                        />
+                        {errors.password && (
+                            <p className="errores">El Password es requerido</p>
+                        )}
+
+                        <label>Password</label>
+                    </div>
+                    <div className="forgot">
+                        <button type="button">
+                            <p>
+                                <Link to="/login">Ya tengo una cuenta</Link>
+                            </p>
+                        </button>
+                    </div>
+                    <button onClick={onSubmit} className="Boton-enviar">
+                        Enviar
                     </button>
-                </div>
-                <button onClick={onSubmit} className="Boton-enviar">
-                    Registrarse
-                </button>
-            </form>
+                </form>
+            </div>
+            <Toaster />
         </div>
     );
 };

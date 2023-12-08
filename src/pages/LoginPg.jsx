@@ -3,9 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 import { useEffect } from "react";
 import "../styles/LoginStyles.css";
+import { Toaster, toast } from "react-hot-toast";
 
 const LoginPg = () => {
-    const { login, isAuth, errors: errorBack } = useAuth();
+    const { login, isAuth, errorsBack } = useAuth();
     const {
         register,
         handleSubmit,
@@ -17,12 +18,16 @@ const LoginPg = () => {
 
     // Si el usuario esta autenticado lo redirecciona a la pagina de blog
     useEffect(() => {
-        if (isAuth) navigate("/blog");
+        if (isAuth) {
+            navigate("/blog");
+        }
     }, [isAuth]);
 
     // Funcion para enviar los datos del formulario
     const onSubmit = handleSubmit((value) => {
-        login(value);
+        if (!errors.email || !errors.password) {
+            login(value);
+        }
     });
 
     return (
@@ -34,6 +39,11 @@ const LoginPg = () => {
                 <h2>Login</h2>
                 <p>Ingrese con sus credenciales</p>
 
+                {errorsBack.map((error, index) => (
+                    <p key={index} className="errores">
+                        {error.data}
+                    </p>
+                ))}
                 <form>
                     <div className="inputBox">
                         <input
@@ -44,10 +54,9 @@ const LoginPg = () => {
                             {...register("email", { required: true })}
                         />
                         {errors.email && (
-                            <p className="text-red-400">
-                                El Email es requerido
-                            </p>
+                            <p className="errores">El Email es requerido</p>
                         )}
+
                         <label>E-mail </label>
                     </div>
                     <div className="inputBox">
@@ -59,10 +68,9 @@ const LoginPg = () => {
                             {...register("password", { required: true })}
                         />
                         {errors.password && (
-                            <p className="text-red-400">
-                                El Password es requerido
-                            </p>
+                            <p className="errores">El Password es requerido</p>
                         )}
+
                         <label>Password</label>
                     </div>
                     <div className="forgot">
@@ -77,6 +85,7 @@ const LoginPg = () => {
                     </button>
                 </form>
             </div>
+            <Toaster />
         </div>
     );
 };
