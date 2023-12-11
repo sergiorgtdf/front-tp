@@ -32,15 +32,11 @@ export const ToolBar = () => {
                             </a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="/blog">
-                                Blog
+                            <a className="nav-link" href="/new">
+                                Nuevo Post
                             </a>
                         </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="/task">
-                                Task
-                            </a>
-                        </li>
+
                         <li className="nav-item dropdown">
                             <a
                                 className="nav-link dropdown-toggle"
@@ -52,7 +48,7 @@ export const ToolBar = () => {
                                     <img
                                         src={JSON.parse(
                                             localStorage.getItem(
-                                                "user.imageURL"
+                                                "user.user.imageURL"
                                             )
                                         )}
                                         alt="..."

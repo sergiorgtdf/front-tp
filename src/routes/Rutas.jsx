@@ -1,21 +1,28 @@
 import { Routes, Route } from "react-router-dom";
+import { ProtectedRoutes } from "./ProtectedRoutes";
 import HomePg from "../pages/HomePg";
 import ProfilePg from "../pages/ProfilePg";
-import BlogPg from "../pages/BlogPg";
+import BlogPg from "../pages/Blog/BlogPg";
 import LoginPg from "../pages/LoginPg";
 import RegisterPg from "../pages/RegisterPg";
-import { ProtectedRoutes } from "./ProtectedRoutes";
+import SinglePostPg from "../pages/Post/singlePostPg";
+
+import NewPostPg from "../pages/Editor/NewPostPg";
 export const Rutas = () => {
     return (
         <>
             <Routes>
-                <Route path="/" element={<HomePg />} />
+                <Route path="/" element={<BlogPg />} />
                 <Route path="/login" element={<LoginPg />} />
                 <Route path="/register" element={<RegisterPg />} />
                 <Route path="/logout" element={<HomePg />} />
+
+                <Route path="/posts/:id" element={<SinglePostPg />} />
+
                 <Route element={<ProtectedRoutes />}>
                     <Route path="/profile" element={<ProfilePg />} />
-                    <Route path="/blog" element={<BlogPg />} />
+                    <Route path="/new" element={<NewPostPg />} />
+                    <Route path="/edit/:id" element={<NewPostPg />} />
                 </Route>
             </Routes>
         </>

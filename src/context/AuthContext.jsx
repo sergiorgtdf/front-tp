@@ -103,7 +103,11 @@ export const AuthProvider = ({ children }) => {
             try {
                 const res = await verifyTokenRequest(cookies.token);
                 console.log(res);
-                if (!res.data) return setIsAuth(false);
+                if (!res.data) {
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("user");
+                    return setIsAuth(false);
+                }
 
                 setIsAuth(true);
                 setUser(res.data);
@@ -111,6 +115,8 @@ export const AuthProvider = ({ children }) => {
             } catch (error) {
                 setIsAuth(false);
                 setLoading(false);
+                localStorage.removeItem("token");
+                localStorage.removeItem("user");
                 seterrorsBack(error.response.data);
             }
         };
