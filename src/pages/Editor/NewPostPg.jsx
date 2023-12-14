@@ -5,9 +5,11 @@ import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { usePost } from "../../context/postContext";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const NewPostPg = () => {
-    const { getPost, createPost, updatePost } = usePost();
+    const navigate = useNavigate();
+    const { getPost, createPost, updatePost, errorBack } = usePost();
     const [img, setImg] = useState(
         "https://upload.wikimedia.org/wikipedia/en/6/60/No_Picture.jpg"
     );
@@ -22,12 +24,17 @@ const NewPostPg = () => {
         formState: { errors },
     } = useForm();
 
+    const cancelEvent = (e) => {
+        e.preventDefault();
+        navigate(`/posts/${params.id}`);
+    };
     const onSubmit = (data) => {
         try {
             if (id) {
                 // update
                 console.log(data);
                 updatePost(params.id, data);
+                navigate(`/posts/${params.id}`);
             } else {
                 // create
                 createPost(data);
@@ -52,11 +59,16 @@ const NewPostPg = () => {
 
     return (
         <div className="container">
+            {errorBack.map((error, index) => (
+                <p key={index} className="errores">
+                    {error.data}
+                </p>
+            ))}
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="desc-img">
                     {/* Titulo del post */}
 
-                    <img src={img} alt="" />
+                    <img className="imgPost" src={img} alt="" />
 
                     <input
                         type="text"
@@ -83,7 +95,11 @@ const NewPostPg = () => {
                         required
                         {...register("description", { required: true })}
                     />
+
                     <div className="boton">
+                        <button onClick={cancelEvent} className="cancel">
+                            Cancelar
+                        </button>
                         <button className="publish">Publicar</button>
                     </div>
                 </div>

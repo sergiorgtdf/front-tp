@@ -9,6 +9,7 @@ export const ProtectedRoutes = () => {
 
     const { loading, isAuth } = useAuth();
     // console.log(user, isAuth);
+    // const history = useHistory();
 
     if (loading)
         return (
@@ -20,7 +21,7 @@ export const ProtectedRoutes = () => {
             </>
         );
     // si no esta autenticado lo redirecciono al login
-    if (loading && !isAuth) return <Navigate to="/login" replace />;
+    if (loading && !isAuth) return <Navigate to="/login" />;
 
     console.log(`isAuth rutas protegidas = ${isAuth} `);
     if (!isAuth) {

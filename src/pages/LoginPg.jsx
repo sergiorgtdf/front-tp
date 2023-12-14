@@ -19,14 +19,19 @@ const LoginPg = () => {
     // Si el usuario esta autenticado lo redirecciona a la pagina de blog
     useEffect(() => {
         if (isAuth) {
-            navigate("/blog");
+            navigate("/");
         }
     }, [isAuth]);
 
     // Funcion para enviar los datos del formulario
     const onSubmit = handleSubmit((value) => {
         if (!errors.email || !errors.password) {
-            login(value);
+            const { res } = login(value);
+            if (res) {
+                toast.success("Bienvenido");
+                // localStorage.setItem("token", res.token);
+                // localStorage.setItem("user", JSON.stringify(res.user));
+            }
         }
     });
 
@@ -34,7 +39,9 @@ const LoginPg = () => {
         <div className="contenedorLogin">
             <div className="box">
                 <div id="logo" className="logo-Pg" title="Task">
-                    <img src="../../img/task.svg" height="50px" alt="" />
+                    <i className="fa-solid fa-blog fa-2xl"></i>
+
+                    {/* <img src="" height="50px" alt="" /> */}
                 </div>
                 <h2>Login</h2>
                 <p>Ingrese con sus credenciales</p>

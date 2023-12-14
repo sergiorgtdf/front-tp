@@ -35,13 +35,42 @@ export const AuthProvider = ({ children }) => {
         }
     }, [errorsBack]);
 
+    // Verifica que este logueado
+    useEffect(() => {
+        const checkLogin = async () => {
+            const cookies = Cookies.get();
+            if (!cookies.token) {
+                setIsAuth(false);
+                setLoading(false);
+                toast.error("No estas logueado");
+                return;
+            }
+            try {
+                const res = await verifyTokenRequest(cookies.token);
+
+                if (!res.data) {
+                    return setIsAuth(false);
+                }
+                setIsAuth(true);
+                setUser(res.data);
+                setLoading(false);
+            } catch (error) {
+                setIsAuth(false);
+                setLoading(false);
+                setUser(null);
+                seterrorsBack([error.response.data]);
+            }
+        };
+        checkLogin();
+    }, []);
+
     const createUser = async (user) => {
         try {
             const res = await registerRequest(user);
 
             if (res) {
-                localStorage.setItem("token", res.data.token);
-                localStorage.setItem("user", JSON.stringify(res.data.user));
+                // localStorage.setItem("token", res.data.token);
+                // localStorage.setItem("user", JSON.stringify(res.data.user));
                 setUser(res.data);
                 setIsAuth(true);
                 toast.success("Bienvenido");
@@ -54,28 +83,39 @@ export const AuthProvider = ({ children }) => {
                 });
             }
         } catch (error) {
-            toast.error(error.response.data);
+            if (Array.isArray(error.response.data)) {
+                seterrorsBack(error.response.data);
+            } else seterrorsBack([error.response.data]);
+
+            toast.error(errorsBack);
 
             setIsAuth(false);
-            seterrorsBack(error.response.data);
         }
     };
 
     const login = async (user) => {
         try {
             const res = await loginRequest(user);
+            setUser(res.data);
             if (res) {
-                localStorage.setItem("token", res.data.token);
-                localStorage.setItem("user", JSON.stringify(res.data.user));
+                // localStorage.setItem("token", res.data.token);
+                // localStorage.setItem(
+                //     "user",
+                //     JSON.stringify(res.data.user.data)
+                // );
                 toast.success("Bienvenido");
+                console.log(res.data);
                 setUser(res.data);
                 setIsAuth(true);
             }
         } catch (error) {
-            toast.error(error.response.data);
+            if (Array.isArray(error.response.data)) {
+                seterrorsBack(error.response.data);
+            } else seterrorsBack([error.response.data]);
+
+            toast.error(errorsBack);
 
             setIsAuth(false);
-            seterrorsBack(error.response.data);
         }
     };
 
@@ -90,38 +130,6 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
         seterrorsBack([]);
     };
-
-    // Verifica que este logueado
-    useEffect(() => {
-        const checkLogin = async () => {
-            const cookies = Cookies.get();
-            if (!cookies.token) {
-                setIsAuth(false);
-                setLoading(false);
-                return;
-            }
-            try {
-                const res = await verifyTokenRequest(cookies.token);
-                console.log(res);
-                if (!res.data) {
-                    localStorage.removeItem("token");
-                    localStorage.removeItem("user");
-                    return setIsAuth(false);
-                }
-
-                setIsAuth(true);
-                setUser(res.data);
-                setLoading(false);
-            } catch (error) {
-                setIsAuth(false);
-                setLoading(false);
-                localStorage.removeItem("token");
-                localStorage.removeItem("user");
-                seterrorsBack(error.response.data);
-            }
-        };
-        checkLogin();
-    }, []);
 
     return (
         <AuthContext.Provider

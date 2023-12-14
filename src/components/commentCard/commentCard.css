@@ -1,67 +1,55 @@
 
 .contenedor {
-    display: flex;
-    flex-direction: row;
-    border: 3px solid #b6b5b5;
+    background-color: rgb(175, 175, 180);
+   display: flex;
+    
+    /* align-items: center; */
+    border: 1px solid #b6b5b5;
     border-radius: 10px;
-    width: 60%;
-    height: 150px;
-    margin: 0px 25px 40px 25px;
-}
-.avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-top: 10px;
-    margin-left: 10px;
-}
-
-.avatar-img {
-    display: flex;
-    /* margin-top: 25px; */
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-}
-.contenido {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
+    width: 80%;
     height: 100px;
-    margin-left: 10px;
-    margin-top: 10px;
+    margin: 0px 25px 40px 25px;
     
 }
-.autor {
-    font-size: 20px;
-    font-weight: bold;
-    margin-left: 30px;
-    /* margin-top: 10px; */
-}
-
-.comment {
-    font-family: "Varela Round", Arial, Helvetica, sans-serif;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 24px;
-    color: #444444;
-    margin-top: 5px;
-    margin-left: 20px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical;
-}
-
-
-.commentPostEdit{
+ 
+.pic-avatar {
+    border-radius: 10px;
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
     align-items: center;
-    margin-top: 10px;
-    margin-left: 20px;
-    margin-right: 20px;
-    margin-bottom: 10px;
+    height: 90px;    width: 80px;
+    background-color: rgb(175, 175, 180);
+}
+.pic {
+    margin: auto;
+    text-align: center;
+    align-items: center;
+    
+    height: 60px;
+    width: 60px;
+    border-radius: 50px;
+    align-items: center;
+}
+
+.content {
+    flex-direction: flex;
+    padding-left: 10px;
+    padding-top: 10px;
+    
+}
+
+.content p {
+    margin: 0px;
+    padding: 0px;
+    font-size: 15px;
+    color: white;
+}
+p.autor{
+    font-size: 20px;
+    color: black;
+    font-weight: 800;
+}
+
+p.id{
+    font-size: 10px;
+    color: transparent;
 }

@@ -19,7 +19,7 @@ const RegisterPg = () => {
     // Si el usuario esta autenticado lo redirecciona a la pagina de blog
     useEffect(() => {
         if (isAuth) {
-            navigate("/blog");
+            navigate("/");
         }
     }, [isAuth]);
 
@@ -34,19 +34,21 @@ const RegisterPg = () => {
         <div className="contenedorLogin">
             <div className="box">
                 <div id="logo" className="logo-Pg" title="Task">
-                    <img src="../../img/task.svg" height="50px" alt="" />
+                    <i className="fa-solid fa-blog fa-2xl"></i>
+                    {/* <img src="../../img/task.svg" height="50px" alt="" /> */}
                 </div>
                 <h2>Login</h2>
                 <p>Ingrese con sus credenciales</p>
 
-                {errorsBack.map((error, index) => (
+                {/* {errorsBack.map((error, index) => (
                     <p key={index} className="errores">
-                        {error.data}
+                        {error}
                     </p>
-                ))}
+                ))} */}
                 <form>
                     <div className="inputBox">
                         <input
+                            id="username"
                             type="username"
                             name="username"
                             required=""
@@ -59,7 +61,7 @@ const RegisterPg = () => {
                             </p>
                         )}
 
-                        <label>Nombre de Usuario </label>
+                        <label id="username">Nombre de Usuario </label>
                     </div>
 
                     <div className="inputBox">

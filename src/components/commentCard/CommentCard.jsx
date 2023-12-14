@@ -1,22 +1,17 @@
 import "./CommentCard.css";
 
-const CommentCard = ({ comment, handleDeleteComment, user, avatar }) => {
+const CommentCard = ({ comment, autor, avatar, index }) => {
     return (
         <>
             <div className="contenedor">
-                <div className="avatar">
-                    <img className="avatar-img" src={avatar} alt="avatar" />
+                <div className="pic-avatar">
+                    <img className="pic" src={avatar} alt="Avatar usuario" />
                 </div>
-                <div className="contenido">
-                    <div className="autor">{user}</div>
-                    <div className="comment">
-                        <p>{comment}</p>
-                    </div>
+                <div className="content">
+                    <p className="autor">{autor}</p>
+                    <p>{comment}</p>
                 </div>
-                <div className="commentPostEdit">
-                    <i className="singlePostIcon far fa-edit"></i>
-                    <i className="singlePostIcon far fa-trash-alt"></i>
-                </div>
+                <p className="id">{index}</p>
             </div>
         </>
     );

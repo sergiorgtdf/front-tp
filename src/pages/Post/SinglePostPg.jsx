@@ -1,7 +1,7 @@
 import "./post.css";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Toaster } from "react-hot-toast";
+import { Toaster, toast } from "react-hot-toast";
 
 import { usePost } from "../../context/postContext";
 
@@ -48,6 +48,16 @@ const SinglePostPg = () => {
         }
     }, []);
 
+    const confirmDelete = () => {
+        console.log("confirm delete");
+        toast((t) => (
+            <span>
+                Confirm delete <b>bold</b>
+                <button onClick={() => toast.dismiss(t.id)}>Dismiss</button>
+            </span>
+        ));
+    };
+
     // if (!post) return "";
 
     return (
@@ -65,9 +75,13 @@ const SinglePostPg = () => {
                         {posts.title}
                         <div className="singlePostEdit">
                             <Link to={`/edit/${id}`} className="link">
-                                <i className="singlePostIcon far fa-edit"></i>
+                                <i className="editPostIcon far fa-edit"></i>
                             </Link>
-                            <i className="singlePostIcon far fa-trash-alt"></i>
+                            <Link to={"#"} className="link">
+                                <i
+                                    onClick={confirmDelete}
+                                    className="trashPostIcon far fa-trash-alt"></i>
+                            </Link>
                         </div>
                     </h1>
                     <div className="singlePostInfo">
@@ -97,9 +111,9 @@ const SinglePostPg = () => {
             </div>
 
             <hr />
-            <div className="comment">
-                <h2>Comentarios</h2>
-                <CommentCard />
+            <div className="ListComment">
+                <h2>comentarios</h2>
+                {/* <CommentCard /> */}
             </div>
         </div>
     );

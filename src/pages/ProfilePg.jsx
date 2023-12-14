@@ -6,7 +6,7 @@ export const ProfilePg = () => {
         <>
             <div>Profile</div>
             {JSON.stringify(user, null, 3)}
-            return (
+
             <>
                 <section className="accountInfo">
                     <div className="contenedor">
@@ -15,7 +15,7 @@ export const ProfilePg = () => {
                                 <img src="" alt="" />
                             </div>
                             <div className="accountInfo__container--info">
-                                <h2>Nombre de Usuario</h2>
+                                <h2>Nombre de Usuario: </h2>
                                 <p>Correo</p>
                                 <p>Telefono</p>
                                 <p>Fecha de nacimiento</p>
@@ -29,7 +29,6 @@ export const ProfilePg = () => {
                     </div>
                 </section>
             </>
-            )
         </>
     );
 };

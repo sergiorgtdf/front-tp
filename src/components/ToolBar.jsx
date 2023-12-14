@@ -4,7 +4,7 @@ export const ToolBar = () => {
     const { logout, isAuth } = useAuth();
 
     return (
-        <nav className="navbar navbar-expand-lg bg-body-tertiary">
+        <nav className=" relative navbar navbar-expand-lg bg-body-tertiary">
             <div className="container-fluid">
                 <a className="navbar-brand" href="/">
                     Blog

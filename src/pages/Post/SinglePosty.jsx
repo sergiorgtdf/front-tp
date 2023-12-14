@@ -1,120 +1,170 @@
-import "./post.css";
-import { useEffect, useState } from "react";
+import "./single.css";
+import toast, { Toaster } from "react-hot-toast";
+
+import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
-import { Toaster } from "react-hot-toast";
-
 import { usePost } from "../../context/postContext";
-
+import { useAuth } from "../../context/authContext";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import CommentCard from "../../components/commentCard/CommentCard";
 
-// import { set } from "react-hook-form";
+const SinglePostPgy = () => {
+    const { posts, getPost, addComment, errorBack, deletePost } = usePost();
+    const { user, isAuth } = useAuth();
+    const [img, setImg] = useState(
+        "https://upload.wikimedia.org/wikipedia/en/6/60/No_Picture.jpg"
+    );
+    const [arrComments, setarrComments] = useState([]);
 
-const SinglePostPg = () => {
-    const { getPost } = usePost();
+    const [comment, setComment] = useState("");
     const { id } = useParams();
-    const [loading, setLoading] = useState(true);
-    const [posts, setPosts] = useState([]);
-    // Id - ok
-    console.log(id);
 
-    // use form
-    const {
-        register,
-        setValue,
-        handleSubmit,
-        formState: { errors },
-    } = useForm();
+    const { register, setValue } = useForm();
 
+    const navigate = useNavigate();
 
+    useEffect(() => {
+        const loadPost = async () => {
+            if (id) {
+                const post = await getPost(id);
 
-    const displayPost = async () => {
-        if (loading) {
-            console.log(loading);
-            try {
-                const a = await getPost(id);
-
-                setLoading(false);
-                setPosts(a);
-
-                // getPost(id);
-                // setLoading(false);
-            } catch (error) {
-                console.log("No se pudo cargar el post (displayPost)");
+                console.log(`User: ${user.id}`);
+                console.log(`post: ${post.autor._id}`);
+                setValue("title", post.title);
+                setValue("description", post.description);
+                setValue("imageURL", post.imageURL);
+                setValue("autor", post.autor.username);
+                setValue("createdAt", post.createdAt);
+                setValue("comments", post.comments);
+                setarrComments(post.comments);
+                setImg(post.imageURL);
             }
+        };
+        loadPost();
+    }, []);
+
+    const deleteP = async (req, res) => {};
+
+    const onSubmitaddComment = async (e) => {
+        e.preventDefault();
+
+        try {
+            console.log(`idPost: ${id} comentario: ${comment}`);
+            const { res } = await addComment(id, comment);
+            if (res) {
+                setarrComments(res.comments);
+
+                toast.success("Comentario publicado");
+            }
+        } catch (error) {
+            toast.error(error);
         }
     };
 
-    //Busca el post por id
-    var n = 0;
-    useEffect(() => {
-        n++;
-        if (loading) {
-            console.log("paso por el use effect ", n);
-            displayPost();
-            setLoading(false);
-        }
-    }, []);
-
-    // if (!post) return "";
-
     return (
         <div className="container">
-            <div className="singlePost">
+            <div className="singlePostView">
                 <div className="singlePostWrapper">
-                    
-                    <img
-                        className="singlePostImg"
-                        name="imageURL"
-                        src={posts.imageURL}
-                        alt=""
-                    />
+                    <form>
+                        <div className="desc-img">
+                            {/* Titulo del post */}
 
-                    <h1 className="singlePostTitle"
-                        name="title"
-                        {...register("title" })
-                    >
-                        {posts.title}
-                        <div className="singlePostEdit">
-                            <Link to={`/edit/${id}`} className="link">
-                                <i className="singlePostIcon far fa-edit"></i>
-                            </Link>
-                            <i className="singlePostIcon far fa-trash-alt"></i>
+                            <img className="singlePostImg" src={img} alt="" />
+
+                            <input
+                                className="title"
+                                type="text"
+                                name="title"
+                                placeholder="Titulo"
+                                readOnly
+                                {...register("title")}
+                            />
+                            {/* {user.id === posts.autor._id ? (
+                                <div className="singlePostEdit">
+                                    <Link to={`/edit/${id}`} className="link">
+                                        <i className="editPostIcon far fa-edit"></i>
+                                    </Link>
+                                    <Link
+                                        onClick={deleteP()}
+                                        // to={`/delete-post/${id}`}
+                                        className="link">
+                                        <i className="trashPostIcon far fa-trash-alt"></i>
+                                    </Link>
+                                </div>
+                            ) : (
+                                <p></p>
+                            )} */}
+
+                            <div className="singlePostInfo">
+                                <span>
+                                    Autor:
+                                    <input
+                                        className="span-negrita"
+                                        name="autor"
+                                        readOnly
+                                        {...register("autor")}
+                                    />
+                                </span>
+                                <span>
+                                    Fecha de creacion:
+                                    <input
+                                        className="span-negrita"
+                                        name="createdAt"
+                                        readOnly
+                                        {...register("createdAt")}
+                                    />
+                                </span>
+                            </div>
+
+                            {/* Contenido del post */}
+                            <textarea
+                                className="description"
+                                name="description"
+                                cols="30"
+                                rows="10"
+                                readOnly
+                                {...register("description", { required: true })}
+                            />
                         </div>
-                    </h1>
-                    <div className="singlePostInfo">
-                        <span>
-                            Author:
-                            <b className="singlePostAuthor">
-                                {posts.autor && posts.autor.username}
-                            </b>
-                        </span>
-                        <span>
-                            {posts.createdAt &&
-                                new Date(posts.createdAt).toLocaleDateString(
-                                    "es-AR",
-                                    {
-                                        weekday: "long",
-                                        year: "numeric",
-                                        month: "long",
-                                        day: "numeric",
-                                    }
-                                )}
-                        </span>
-                    </div>
+                    </form>
                 </div>
-                <p className="singlePostDesc">{posts.description}</p>
+                <hr />
+                <div className="ListComnent">
+                    <h3>Comentarios</h3>
 
-                <Toaster />
-            </div>
+                    {arrComments.map((comment) => (
+                        <CommentCard
+                            key={comment._id}
+                            comment={comment.comment}
+                            autor={comment.autor.username}
+                            avatar={comment.autor.imageURL}
+                            index={comment._id}
+                        />
+                    ))}
+                </div>
+                <div className="comment">
+                    <form onSubmit={onSubmitaddComment}>
+                        <textarea
+                            name=""
+                            placeholder="Escribe un comentario"
+                            onChange={(e) => setComment(e.target.value)}
+                            value={comment}
+                            id=""
+                            cols="80"
+                            rows="4"
+                        />
 
-            <hr />
-            <div className="comment">
-                <h2>Comentarios</h2>
-                <CommentCard />
+                        <button type="submit" className="publish">
+                            Publicar
+                        </button>
+                    </form>
+                </div>
             </div>
+            <Toaster />
         </div>
     );
 };
 
-export default SinglePostPg;
+export default SinglePostPgy;
