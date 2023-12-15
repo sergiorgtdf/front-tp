@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import CommentCard from "../../components/commentCard/CommentCard";
 
 const SinglePostPgy = () => {
-    const { posts, getPost, addComment, errorBack, deletePost } = usePost();
+    const { posts, getPost, addComment, deletePost } = usePost();
     const { user, isAuth } = useAuth();
     const [img, setImg] = useState(
         "https://upload.wikimedia.org/wikipedia/en/6/60/No_Picture.jpg"
@@ -26,38 +26,39 @@ const SinglePostPgy = () => {
 
     const navigate = useNavigate();
 
-    useEffect(() => {
-        setActivaEdicion(isAuth);
-    }, [isAuth]);
+    // useEffect(() => {
+    //     setActivaEdicion(isAuth);
+    // }, [isAuth]);
+
+    const loadPost = async () => {
+        if (params.id) {
+            const post = await getPost(params.id);
+
+            setValue("title", post.title);
+            setValue("description", post.description);
+            setValue("imageURL", post.imageURL);
+            setValue("autor", post.autor.username);
+            setValue("createdAt", post.createdAt);
+            setValue("_id", post.autor._id);
+            // setValue("comments", post.comments);
+            setActivaEdicion(post.autor._id === user.id);
+
+            setarrComments(post.comments);
+            setImg(post.imageURL);
+        }
+    };
 
     useEffect(() => {
-        const loadPost = async () => {
-            if (params.id) {
-                console.log(
-                    `Params.id desde singlepost loadpost: ${params.id}`
-                );
-                const post = await getPost(params.id);
-
-                setValue("title", post.title);
-                setValue("description", post.description);
-                setValue("imageURL", post.imageURL);
-                setValue("autor", post.autor.username);
-                setValue("createdAt", post.createdAt);
-                // setValue("comments", post.comments);
-                setarrComments(post.comments);
-                setImg(post.imageURL);
-            }
-        };
         loadPost();
     }, []);
 
-    const deleteP = async (req, res) => {
-        if (!isAuth) {
-            toast.error("Debes iniciar sesion para comentar");
-        } else {
-            // toast.success("Post eliminado");
-        }
-    };
+    // const deleteP = async (req, res) => {
+    //     if (!isAuth) {
+    //         toast.error("Debes iniciar sesion para comentar");
+    //     } else {
+    //         // toast.success("Post eliminado");
+    //     }
+    // };
 
     const onSubmitaddComment = async (e) => {
         e.preventDefault();
@@ -65,11 +66,13 @@ const SinglePostPgy = () => {
             toast.error("Debes iniciar sesion para comentar");
         } else {
             try {
-                // console.log(`idPost: ${params.id} comentario: ${comment}`);
+                console.log(`idPost: ${params.id} comentario: ${comment}`);
                 const res = await addComment(params.id, { comment });
-                console.log(res.data);
+                // setarrComments(res.data);
+                setComment("");
+                loadPost();
             } catch (error) {
-                toast.error(error);
+                console.log("Error al agregar comentario");
             }
         }
     };
@@ -93,19 +96,25 @@ const SinglePostPgy = () => {
                                 {...register("title")}
                             />
 
-                            <div className="singlePostEdit">
-                                <Link
-                                    to={`/edit/${params.id}`}
-                                    className="link">
-                                    <i className="editPostIcon far fa-edit"></i>
-                                </Link>
-                                <Link
-                                    onClick={deleteP()}
-                                    // to={`/delete-post/${id}`}
-                                    className="link">
-                                    <i className="trashPostIcon far fa-trash-alt"></i>
-                                </Link>
-                            </div>
+                            {activaEdicion ? (
+                                <div className="singlePostEdit">
+                                    <Link
+                                        to={`/edit/${params.id}`}
+                                        className="link">
+                                        <i className="editPostIcon far fa-edit"></i>
+                                    </Link>
+                                    <Link
+                                        // onClick={deleteP()}
+                                        // to={`/delete-post/${id}`}
+                                        className="link">
+                                        <i className="trashPostIcon far fa-trash-alt"></i>
+                                    </Link>
+                                </div>
+                            ) : (
+                                <div className="NoConect">
+                                    <p>Solo el autor puede editar</p>
+                                </div>
+                            )}
 
                             <div className="singlePostInfo">
                                 <span>
@@ -172,6 +181,7 @@ const SinglePostPgy = () => {
                     </form>
                 </div>
             </div>
+
             <Toaster />
         </div>
     );

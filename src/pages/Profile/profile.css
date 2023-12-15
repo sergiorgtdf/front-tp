@@ -1,0 +1,51 @@
+
+.Titu  {
+    font-size: 30px;
+    color: #292828;
+    font-weight: bold;
+    margin-top: 20px;
+    align-items: center;
+    justify-content: center;
+}
+
+.accountInfo{
+    
+    width: 100%;
+    height: 800px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+.contenedorInfo {
+    gap: 30px;
+    display: flex;
+    flex-direction: row;
+    /* justify-content: center; */
+    align-items: center;
+    margin-top: 50px;
+    background-color: #a5a4a4;
+    border: 1px solid #575353;
+    height: 650px;
+    width: 80%;
+    border-radius: 20px;
+}
+
+.imagen {
+    margin-left: 30px;
+    background-color: bisque;
+    width: 300px;
+    height: 500px;
+    border: 2px solid #575353;
+    border-radius: 20px;
+}
+.imagen img {
+    
+    background-color: bisque;
+    width: 300px;
+    height: 500px;
+    border: 2px solid #575353;
+    border-radius: 20px;
+}
+.form  {
+    border: 2px solid #575353;
+}

@@ -1,4 +1,5 @@
 import "./NewPost.css";
+
 import { Toaster } from "react-hot-toast";
 
 import { useForm } from "react-hook-form";
@@ -34,7 +35,7 @@ const NewPostPg = () => {
                 // update
                 console.log(data);
                 updatePost(params.id, data);
-                navigate(`/posts/${params.id}`);
+                navigate(`/`);
             } else {
                 // create
                 createPost(data);

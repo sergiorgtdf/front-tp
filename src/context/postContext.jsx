@@ -95,15 +95,32 @@ export const PostProvider = ({ children }) => {
     const addComment = async (id, comment) => {
         try {
             const { res } = await addCommentRequest(id, comment);
-            console.log(res);
+            console.log(res.data);
             if (res.success === true) {
                 toast.success("Comentario publicado");
-
-                // displaySinglePost();
+                return;
             }
         } catch (error) {
             setErrorBack("Error al agregar comentario");
             toast.error("Error al agregar comentario");
+        }
+    };
+
+    const addCommentMid = async (req, res, next) => {
+        const idPost = req.params.id;
+        const comment = req.body;
+
+        try {
+            const { addPost } = await addCommentRequest(idPost, comment);
+            console.log(addPost.data);
+            if (addPost.success === true) {
+                toast.success("Comentario publicado");
+                res.status(200).json(addPost.data);
+            }
+        } catch (error) {
+            setErrorBack("Error al agregar comentario");
+            toast.error("Error al agregar comentario");
+            next(error);
         }
     };
 
@@ -118,6 +135,7 @@ export const PostProvider = ({ children }) => {
                 getPost,
                 updatePost,
                 addComment,
+                addCommentMid,
             }}>
             {children}
         </postContext.Provider>

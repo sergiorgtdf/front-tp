@@ -4,8 +4,8 @@ export const Header = () => {
     return (
         <div className="header">
             <div className="headerTitles">
-                <span className="headerTitleSm">React & Node</span>
                 <span className="headerTitleLg">BLOG</span>
+                <span className="headerTitleSm"></span>
             </div>
             <img
                 className="headerImg"

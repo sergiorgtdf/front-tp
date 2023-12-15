@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import { ProtectedRoutes } from "./ProtectedRoutes";
 import HomePg from "../pages/HomePg";
-import ProfilePg from "../pages/ProfilePg";
+import ProfilePg from "../pages/Profile/ProfilePg";
 import BlogPg from "../pages/Blog/BlogPg";
 import LoginPg from "../pages/LoginPg";
 import RegisterPg from "../pages/RegisterPg";

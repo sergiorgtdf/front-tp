@@ -1,3 +1,6 @@
+.singlePost {
+  flex: 9;
+}
 .container {
     padding-top: 20px;
     /* border: 2px solid rgb(189, 185, 185); */

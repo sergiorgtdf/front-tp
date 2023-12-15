@@ -4,8 +4,7 @@ import { useAuth } from "../../context/authContext";
 
 const TopBar = () => {
     // const user = false;
-
-    const { user } = useAuth();
+    const { user, logout, isAuth } = useAuth();
 
     return (
         <div className="top">
@@ -30,12 +29,19 @@ const TopBar = () => {
                             CONTACT
                         </Link>
                     </li>
-                    <li className="topListItem">
-                        <Link className="link" to="/write">
-                            WRITE
-                        </Link>
-                    </li>
-                    {user && <li className="topListItem">LOGOUT</li>}
+                    {user && (
+                        <li className="topListItem">
+                            <Link className="link" to="/new">
+                                WRITE
+                            </Link>
+                        </li>
+                    )}
+
+                    {user && (
+                        <li className="topListItem" onClick={() => logout()}>
+                            LOGOUT
+                        </li>
+                    )}
                 </ul>
             </div>
             <div className="topRight">
@@ -45,13 +51,13 @@ const TopBar = () => {
                             <img
                                 className="topImg"
                                 src="../../img/userAnonimo.jpg"
-                                alt="Usuario Anonimo"
+                                alt="NoPic"
                             />
                         ) : (
                             <img
                                 className="topImg"
                                 src={user.imageURL}
-                                alt="Imagen de usuario"
+                                alt=""
                             />
                         )}
                     </Link>
