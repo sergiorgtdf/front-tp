@@ -94,11 +94,12 @@ export const PostProvider = ({ children }) => {
     // ok - Back
     const addComment = async (id, comment) => {
         try {
-            const res = await addCommentRequest(id, comment);
+            const { res } = await addCommentRequest(id, comment);
+            console.log(res);
+            if (res.success === true) {
+                toast.success("Comentario publicado");
 
-            if (res) {
-                toast.success("comment added");
-                //displaySinglePost();
+                // displaySinglePost();
             }
         } catch (error) {
             setErrorBack("Error al agregar comentario");

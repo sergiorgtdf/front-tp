@@ -12,7 +12,5 @@ export const updatePostRequest = async (id, post) => {
 
 export const deletePostRequest = async (id) => axios.delete(`/posts/${id}`);
 
-export const addCommentRequest = async (id, comment) => {
-    console.log(`Comentario desdes axios ${comment} id: ${id}`);
+export const addCommentRequest = async (id, comment) =>
     axios.put(`/comment-posts/${id}`, comment);
-};

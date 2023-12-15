@@ -10,6 +10,7 @@ const BlogCard = ({ post }) => {
     return (
         <div className="post">
             {/* Imagen */}
+
             <img className="postImg" src={post.imageURL} alt="" />
             <div className="postInfo">
                 {/* Autor */}
@@ -27,6 +28,10 @@ const BlogCard = ({ post }) => {
                 {/* Fecha */}
 
                 <span className="postDate">{post.createdAt}</span>
+
+                <span className="postDate">
+                    Comments: {post.comments.length}
+                </span>
             </div>
             {/* Descripcion */}
 

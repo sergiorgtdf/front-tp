@@ -3,7 +3,7 @@ import { usePost } from "../../context/postContext";
 import { ImFileEmpty } from "react-icons/im";
 import PostCard from "../../components/CardPost/PostCard";
 import { Header } from "../../components/Headers/Header";
-import "../Blog/blogPg.css";
+import "../../styles/style.css";
 import toast from "react-hot-toast";
 
 export const BlogPg = () => {
@@ -28,10 +28,7 @@ export const BlogPg = () => {
                 <div className="NoPostContainer">
                     <div>
                         <ImFileEmpty />
-                        <h1>
-                            Aun no se han creado post, inicia sesion y contale a
-                            todo el mundo tus aventuras...
-                        </h1>
+                        <h1>No hay entradas en el blog!</h1>
                     </div>
                 </div>
             )}

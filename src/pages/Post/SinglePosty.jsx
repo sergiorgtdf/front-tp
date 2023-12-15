@@ -19,25 +19,31 @@ const SinglePostPgy = () => {
     const [arrComments, setarrComments] = useState([]);
 
     const [comment, setComment] = useState("");
-    const { id } = useParams();
+    const params = useParams();
+    const [activaEdicion, setActivaEdicion] = useState(false);
 
     const { register, setValue } = useForm();
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        const loadPost = async () => {
-            if (id) {
-                const post = await getPost(id);
+        setActivaEdicion(isAuth);
+    }, [isAuth]);
 
-                console.log(`User: ${user.id}`);
-                console.log(`post: ${post.autor._id}`);
+    useEffect(() => {
+        const loadPost = async () => {
+            if (params.id) {
+                console.log(
+                    `Params.id desde singlepost loadpost: ${params.id}`
+                );
+                const post = await getPost(params.id);
+
                 setValue("title", post.title);
                 setValue("description", post.description);
                 setValue("imageURL", post.imageURL);
                 setValue("autor", post.autor.username);
                 setValue("createdAt", post.createdAt);
-                setValue("comments", post.comments);
+                // setValue("comments", post.comments);
                 setarrComments(post.comments);
                 setImg(post.imageURL);
             }
@@ -45,21 +51,26 @@ const SinglePostPgy = () => {
         loadPost();
     }, []);
 
-    const deleteP = async (req, res) => {};
+    const deleteP = async (req, res) => {
+        if (!isAuth) {
+            toast.error("Debes iniciar sesion para comentar");
+        } else {
+            // toast.success("Post eliminado");
+        }
+    };
 
     const onSubmitaddComment = async (e) => {
         e.preventDefault();
-
-        try {
-            console.log(`idPost: ${id} comentario: ${comment}`);
-            const { res } = await addComment(id, comment);
-            if (res) {
-                setarrComments(res.comments);
-
-                toast.success("Comentario publicado");
+        if (!isAuth) {
+            toast.error("Debes iniciar sesion para comentar");
+        } else {
+            try {
+                // console.log(`idPost: ${params.id} comentario: ${comment}`);
+                const res = await addComment(params.id, { comment });
+                console.log(res.data);
+            } catch (error) {
+                toast.error(error);
             }
-        } catch (error) {
-            toast.error(error);
         }
     };
 
@@ -81,21 +92,20 @@ const SinglePostPgy = () => {
                                 readOnly
                                 {...register("title")}
                             />
-                            {/* {user.id === posts.autor._id ? (
-                                <div className="singlePostEdit">
-                                    <Link to={`/edit/${id}`} className="link">
-                                        <i className="editPostIcon far fa-edit"></i>
-                                    </Link>
-                                    <Link
-                                        onClick={deleteP()}
-                                        // to={`/delete-post/${id}`}
-                                        className="link">
-                                        <i className="trashPostIcon far fa-trash-alt"></i>
-                                    </Link>
-                                </div>
-                            ) : (
-                                <p></p>
-                            )} */}
+
+                            <div className="singlePostEdit">
+                                <Link
+                                    to={`/edit/${params.id}`}
+                                    className="link">
+                                    <i className="editPostIcon far fa-edit"></i>
+                                </Link>
+                                <Link
+                                    onClick={deleteP()}
+                                    // to={`/delete-post/${id}`}
+                                    className="link">
+                                    <i className="trashPostIcon far fa-trash-alt"></i>
+                                </Link>
+                            </div>
 
                             <div className="singlePostInfo">
                                 <span>
