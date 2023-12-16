@@ -1,4 +1,5 @@
 import "./single.css";
+
 import toast, { Toaster } from "react-hot-toast";
 
 import { useForm } from "react-hook-form";
@@ -26,10 +27,6 @@ const SinglePostPgy = () => {
 
     const navigate = useNavigate();
 
-    // useEffect(() => {
-    //     setActivaEdicion(isAuth);
-    // }, [isAuth]);
-
     const loadPost = async () => {
         if (params.id) {
             const post = await getPost(params.id);
@@ -52,13 +49,14 @@ const SinglePostPgy = () => {
         loadPost();
     }, []);
 
-    // const deleteP = async (req, res) => {
-    //     if (!isAuth) {
-    //         toast.error("Debes iniciar sesion para comentar");
-    //     } else {
-    //         // toast.success("Post eliminado");
-    //     }
-    // };
+    const deleteP = async (req, res) => {
+        if (!isAuth) {
+            deletePost(params.id);
+            toast.error("Debes iniciar sesion para comentar");
+        } else {
+            // toast.success("Post eliminado");
+        }
+    };
 
     const onSubmitaddComment = async (e) => {
         e.preventDefault();
@@ -104,8 +102,8 @@ const SinglePostPgy = () => {
                                         <i className="editPostIcon far fa-edit"></i>
                                     </Link>
                                     <Link
-                                        // onClick={deleteP()}
-                                        // to={`/delete-post/${id}`}
+                                        onClick={deleteP()}
+                                        to={`/delete-post/${params.id}`}
                                         className="link">
                                         <i className="trashPostIcon far fa-trash-alt"></i>
                                     </Link>

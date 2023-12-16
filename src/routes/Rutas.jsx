@@ -11,9 +11,6 @@ import SinglePostPgy from "../pages/Post/SinglePosty";
 import AboutPg from "../pages/About/AboutPg";
 import ContactPg from "../pages/Contact/ContactPg";
 
-// tabla
-import { PostTable } from "../pages/Posttable/PostTable";
-
 export const Rutas = () => {
     return (
         <>
@@ -36,7 +33,6 @@ export const Rutas = () => {
                     />
                     <Route path="/new" element={<NewPostPg />} />
                     <Route path="/edit/:id" element={<NewPostPg />} />
-                    <Route path="/my-posts" element={<PostTable />} />
                 </Route>
             </Routes>
         </>

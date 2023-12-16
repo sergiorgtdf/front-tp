@@ -9,7 +9,8 @@ const TopBar = () => {
     return (
         <div className="top">
             <div className="topLeft">
-                <h1>Blog</h1>
+                <i className="fa-solid fa-blog fa-2xl"></i>
+                {/* <h1>Blog</h1> */}
             </div>
             <div className="topCenter">
                 <ul className="topList">
@@ -75,7 +76,7 @@ const TopBar = () => {
                         </li>
                     </ul>
                 )}
-                <i className="topSearchIcon fas fa-search"></i>
+                <p className="username">{isAuth ? user.username : ""}</p>
             </div>
         </div>
     );

@@ -1,8 +1,5 @@
-import "./App.css";
-
 import { BrowserRouter as Router } from "react-router-dom";
-// import { Rutas } from "./pages/Rutas.jsx";
-// import ToolBar from "./components/toolBar/ToolBar.jsx";
+
 import Rutas from "./Routes/Rutas.jsx";
 import { Footer } from "./components/Footer/Footer.jsx";
 import { AuthProvider } from "./context/authContext.jsx";
