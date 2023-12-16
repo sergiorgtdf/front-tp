@@ -1,8 +1,17 @@
-# React + Vite
+# Proyecto final Argentina Programa 4.0 Tramo III
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Blog
 
-Currently, two official plugins are available:
+Antes de arrancar debe configurar las credenciales paa comunicarse con el backend
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Debe editar el archivo SetCredentials.js
+
+```
+API_URL = "http://localhost:4000/api";
+```
+
+Luego Ejecute el comando 
+
+``` 
+npm run dev
+```

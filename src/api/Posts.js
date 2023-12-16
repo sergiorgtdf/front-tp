@@ -1,4 +1,5 @@
 import axios from "./SetCredentials.js";
+console.log("axios", axios);
 
 export const getAllPostsRequest = async () => axios.get("/posts");
 
